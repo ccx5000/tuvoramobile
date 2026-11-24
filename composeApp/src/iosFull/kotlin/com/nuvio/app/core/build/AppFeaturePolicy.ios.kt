@@ -16,10 +16,10 @@ actual object AppFeaturePolicy {
     actual val imdbRatingLogoEnabled: Boolean = true
     actual val debugBackendSwitcherEnabled: Boolean = AppBuildConfig.IS_DEBUG_BUILD
     actual val mediaPlaybackForegroundServiceEnabled: Boolean = false
-    // Upstream custom-server + donation flags the fork does not use (fork = SyncBackend + its own
-    // Donate row via DONATIONS_DONATE_URL); kept off.
+    // Donations stay fork-owned (DONATIONS_DONATE_URL), but the built-in
+    // custom-server UI is on: it is the self-hosted sync backend entry point.
     actual val donationActionsEnabled: Boolean = false
     actual val donationProgressEnabled: Boolean = false
-    actual val customServerConnectionsEnabled: Boolean = false
+    actual val customServerConnectionsEnabled: Boolean = true
     actual val downloadForegroundServiceEnabled: Boolean = false
 }
