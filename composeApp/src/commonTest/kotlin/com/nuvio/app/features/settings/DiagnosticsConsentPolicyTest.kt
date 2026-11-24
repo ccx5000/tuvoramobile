@@ -8,14 +8,13 @@ import kotlin.test.assertTrue
 class DiagnosticsConsentPolicyTest {
 
     /**
-     * The gate shipped in mobile v1.4.20 / TV v1.4.19 defaulted to off, and because it drives
-     * PostHog's opt-out it silenced every event, not only crashes. Measured two weeks later: 416
-     * reporting users were on builds from before the gate and 11 on builds after it, so the app went
-     * effectively blind as people updated.
+     * Privacy-first default: an untouched install sends nothing. A build that reports crashes and
+     * usage before the user has made a choice is the wrong posture for a media app; diagnostics
+     * that are off by default still exist as soon as the user opts in.
      */
     @Test
-    fun `an untouched install reports by default`() {
-        assertTrue(resolveDiagnosticsEnabled(stored = null))
+    fun `an untouched install stays silent until the user opts in`() {
+        assertFalse(resolveDiagnosticsEnabled(stored = null))
     }
 
     /** An explicit no is a decision, and survives the change of default. */
