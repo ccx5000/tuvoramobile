@@ -27,7 +27,7 @@ jobs:
   build:
     name: Build unsigned full ${{ inputs.configuration || 'Release' }} IPA
     runs-on: macos-26
-    timeout-minutes: ${{ (inputs.configuration || 'Release') == 'Release' && 180 || 60 }}
+    timeout-minutes: ${{ (inputs.configuration || 'Release') == 'Release' && 360 || 60 }}
     env:
       DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
       GRADLE_OPTS: -Dfile.encoding=UTF-8
@@ -88,9 +88,12 @@ jobs:
         run: |
           {
             echo ""
-            echo "org.gradle.jvmargs=-Xmx3584M -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=768m -XX:+UseG1GC -XX:G1PeriodicGCInterval=300000 -XX:-G1PeriodicGCInvokesConcurrent"
+            echo "# CI override: the release K/N link runs inside the Gradle daemon and needs >8G"
+            echo "# heap (10.6G peak upstream). This runner has 7G RAM; the surplus pages are served"
+            echo "# by the macOS compressor/swap, so a very large heap cap beats an OOM here."
+            echo "org.gradle.jvmargs=-Xmx11008M -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=1024m -XX:+UseG1GC -XX:G1PeriodicGCInterval=120000 -XX:-G1PeriodicGCInvokesConcurrent"
             echo "kotlin.daemon.jvmargs=-Xmx2048M"
-            echo "kotlin.native.jvmArgs=-Xmx3584M"
+            echo "kotlin.native.jvmArgs=-Xmx11008M"
             echo "org.gradle.workers.max=2"
           } >> gradle.properties
 
