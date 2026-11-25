@@ -85,7 +85,12 @@ jobs:
             rm -rf "xcframework/$name"
             unzip -oq "$z" -d "xcframework/$name"
           done
-          ls -la xcframework | head -20
+          if [[ ! -d xcframework/Libplacebo.xcframework ]]; then
+            echo "Libplacebo.xcframework missing from make output - fetching the prebuilt release the pipeline already consumes"
+            wget -q -O /tmp/Libplacebo.xcframework.zip https://github.com/mpvkit/libplacebo-build/releases/download/7.360.1/Libplacebo.xcframework.zip
+            unzip -oq /tmp/Libplacebo.xcframework.zip -d xcframework/
+          fi
+          ls xcframework
 
       - name: Build unsigned full ${{ inputs.configuration }} IPA
         run: |
