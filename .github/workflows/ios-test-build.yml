@@ -84,6 +84,16 @@ jobs:
             echo "DONATIONS_DONATE_URL="
           } > local.properties
 
+      - name: Tune Gradle memory for the runner
+        run: |
+          {
+            echo ""
+            echo "org.gradle.jvmargs=-Xmx3584M -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=768m -XX:+UseG1GC -XX:G1PeriodicGCInterval=300000 -XX:-G1PeriodicGCInvokesConcurrent"
+            echo "kotlin.daemon.jvmargs=-Xmx2048M"
+            echo "kotlin.native.jvmArgs=-Xmx3584M"
+            echo "org.gradle.workers.max=2"
+          } >> gradle.properties
+
       - name: Prepare iOS dependencies
         run: ./scripts/prepare-ios-dependencies.sh
 
