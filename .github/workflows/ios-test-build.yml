@@ -85,26 +85,38 @@ jobs:
             wget -q -O Libplacebo.xcframework.zip https://github.com/mpvkit/libplacebo-build/releases/download/7.360.1/Libplacebo.xcframework.zip
           fi
           for z in ./*.xcframework.zip; do
-            name="$(basename "$z" .zip)"
-            target="xcframework/$name"
-            work="xcframework/.unpack-$name"
+            name="$(basename "$z" .xcframework.zip)"
+            xf="$name.xcframework"
+            target="xcframework/$xf"
+            work="xcframework/.unpack-$xf"
             lift="$target.lift"
             rm -rf "$target" "$work" "$lift"
             mkdir -p "$work"
             unzip -oq "$z" -d "$work"
-            entry="$(find "$work" -type d -name "$name.xcframework" | sort | head -1)"
+            entry="$(find "$work" -type d -name "$xf" | sort | head -1)"
             if [[ -z "$entry" ]]; then
-              echo "No xcframework inside $z" >&2
-              exit 1
+              entry="$(find "$work" -type d -name '*.xcframework' | sort | head -1)"
+            fi
+            if [[ -z "$entry" ]]; then
+              if [[ -d "$work/ios-arm64" ]]; then
+                entry="$work"
+              else
+                echo "No $xf inside $z - extracted tree:" >&2
+                find "$work" -maxdepth 3 >&2
+                exit 1
+              fi
             fi
             mv "$entry" "$target"
-            while [[ -d "$target/$name.xcframework" ]]; do
-              mv "$target/$name.xcframework" "$lift"
+            while [[ ! -f "$target/Info.plist" ]]; do
+              inner="$(find "$target" -mindepth 1 -maxdepth 1 -type d -name '*.xcframework' | sort | head -1)"
+              [[ -n "$inner" ]] || break
+              rm -rf "$lift"
+              mv "$inner" "$lift"
               rm -rf "$target"
               mv "$lift" "$target"
             done
             rm -rf "$work" "$lift"
-            echo "$name: $(find "$target" -mindepth 1 -maxdepth 1 | tr '\n' ' ')"
+            echo "$xf: $(find "$target" -mindepth 1 -maxdepth 1 -type d | xargs -n1 basename | tr '\n' ' ')"
           done
           for lib in Libmpv Libavcodec Libavdevice Libavfilter Libavformat Libavutil Libswresample Libswscale Libplacebo; do
             [[ -d "xcframework/$lib.xcframework" ]] || { echo "MISSING xcframework/$lib.xcframework" >&2; exit 1; }
