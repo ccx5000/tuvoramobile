@@ -128,7 +128,9 @@ jobs:
           for lib in Libmpv Libavcodec Libavdevice Libavfilter Libavformat Libavutil Libswresample Libswscale Libplacebo; do
             [[ -d "xcframework/$lib.xcframework" ]] || { echo "MISSING xcframework/$lib.xcframework" >&2; exit 1; }
           done
-          if [[ ! -f xcframework/Libmpv.xcframework/tvos-arm64/Libmpv.framework/Libmpv ]]; then
+          mpv_slice="tvos-arm64"
+          [[ -f xcframework/Libmpv.xcframework/tvos-arm64/Libmpv.framework/Libmpv ]] || mpv_slice="tvos-arm64_arm64e"
+          if [[ ! -f xcframework/Libmpv.xcframework/$mpv_slice/Libmpv.framework/Libmpv ]]; then
             echo "Libmpv tvOS device slice still wrong:" >&2
             find xcframework/Libmpv.xcframework -maxdepth 4 >&2
             exit 1
