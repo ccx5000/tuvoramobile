@@ -88,19 +88,22 @@ jobs:
             name="$(basename "$z" .zip)"
             target="xcframework/$name"
             work="xcframework/.unpack-$name"
-            rm -rf "$target" "$work"
+            lift="$target.lift"
+            rm -rf "$target" "$work" "$lift"
             mkdir -p "$work"
             unzip -oq "$z" -d "$work"
-            entry="$(find "$work" -type d -name '*.xcframework' | awk '{ print length, $0 }' | sort -n | head -1 | cut -d' ' -f2-)"
+            entry="$(find "$work" -type d -name "$name.xcframework" | sort | head -1)"
             if [[ -z "$entry" ]]; then
               echo "No xcframework inside $z" >&2
               exit 1
             fi
-            while [[ -d "$entry/$name.xcframework" ]]; do
-              entry="$entry/$name.xcframework"
-            done
             mv "$entry" "$target"
-            rm -rf "$work"
+            while [[ -d "$target/$name.xcframework" ]]; do
+              mv "$target/$name.xcframework" "$lift"
+              rm -rf "$target"
+              mv "$lift" "$target"
+            done
+            rm -rf "$work" "$lift"
             echo "$name: $(find "$target" -mindepth 1 -maxdepth 1 | tr '\n' ' ')"
           done
           for lib in Libmpv Libavcodec Libavdevice Libavfilter Libavformat Libavutil Libswresample Libswscale Libplacebo; do
