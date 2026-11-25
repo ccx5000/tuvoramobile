@@ -32,6 +32,7 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
       GRADLE_OPTS: -Dfile.encoding=UTF-8
       IOS_CONFIGURATION: ${{ inputs.configuration || 'Release' }}
+      KOTLIN_FRAMEWORK_OPTIMIZE: "false"
       KOTLIN_DAEMON_JVMARGS: -Xmx2048M
       NUVIO_GRADLE_JVMARGS: -Xmx4608M -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=768M
       NUVIO_KOTLIN_NATIVE_JVMARGS: -Xmx4608M
@@ -88,12 +89,11 @@ jobs:
         run: |
           {
             echo ""
-            echo "# CI override: the release K/N link runs inside the Gradle daemon and needs >8G"
-            echo "# heap (10.6G peak upstream). This runner has 7G RAM; the surplus pages are served"
-            echo "# by the macOS compressor/swap, so a very large heap cap beats an OOM here."
-            echo "org.gradle.jvmargs=-Xmx11008M -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=1024m -XX:+UseG1GC -XX:G1PeriodicGCInterval=120000 -XX:-G1PeriodicGCInvokesConcurrent"
+            echo "# CI override: release K/N global optimizations are off (KOTLIN_FRAMEWORK_OPTIMIZE)"
+            echo "# so the link needs far less than the 10.6G peak the optimized pass measured."
+            echo "org.gradle.jvmargs=-Xmx6144M -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=1024m -XX:+UseG1GC -XX:G1PeriodicGCInterval=120000 -XX:-G1PeriodicGCInvokesConcurrent"
             echo "kotlin.daemon.jvmargs=-Xmx2048M"
-            echo "kotlin.native.jvmArgs=-Xmx11008M"
+            echo "kotlin.native.jvmArgs=-Xmx6144M"
             echo "org.gradle.workers.max=2"
           } >> gradle.properties
 

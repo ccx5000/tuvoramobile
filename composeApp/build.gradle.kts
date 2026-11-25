@@ -9,6 +9,8 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.CommandLineArgumentProvider
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeSimulatorTest
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
@@ -520,6 +522,22 @@ kotlin {
                     "-framework", "SystemConfiguration",
                     "-framework", "CoreFoundation",
                 )
+            }
+        }
+
+        // CI escape hatch: KOTLIN_FRAMEWORK_OPTIMIZE=false drops K/N global optimizations for the
+        // release framework. The whole-module DFG pass was measured at >8G live heap (it OOMed at
+        // 8G) and never finished on a 7 GB hosted runner even over 6 hours, so the CI IPA job
+        // submits via this off-switch. Off-switch uses debuggable=true to keep the binary
+        // configuration check happy; local and release-channel builds stay optimized (default).
+        val frameworkOptimize = providers.environmentVariable("KOTLIN_FRAMEWORK_OPTIMIZE")
+            .orNull?.trim()?.lowercase() != "false"
+        if (!frameworkOptimize) {
+            iosTarget.binaries.withType<Framework>().configureEach {
+                if (buildType == NativeBuildType.RELEASE) {
+                    debuggable = true
+                    optimized = false
+                }
             }
         }
 
