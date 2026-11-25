@@ -91,7 +91,8 @@ jobs:
               exit 1
             fi
             rm -rf "xcframework/$(basename "$entry")"
-            cp -R "$entry" "xcframework/$(basename "$entry")"
+            mkdir -p "xcframework/$(basename "$entry")"
+            cp -R "$entry"/. "xcframework/$(basename "$entry")/"
           done
           if [[ ! -d xcframework/Libplacebo.xcframework ]]; then
             echo "Libplacebo.xcframework missing from make output - fetching the prebuilt release the pipeline already consumes"
@@ -142,7 +143,7 @@ jobs:
       - name: Upload test IPA
         uses: actions/upload-artifact@v7
         with:
-          name: nuvio-test-${{ inputs.configuration }}-ipa-${{ github.sha }}
+          name: nuvio-test-${{ inputs.configuration || 'Release' }}-ipa-${{ github.sha }}
           path: build/ios-ipa/*.ipa
           if-no-files-found: error
           retention-days: 7
