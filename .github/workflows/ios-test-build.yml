@@ -69,6 +69,21 @@ jobs:
           printf '%s' "${RELEASE_PROPERTIES_BASE64}" | base64 --decode > local.properties
           sed -i '' -E '/^[[:space:]]*(sdk\.dir|NUVIO_RELEASE_STORE_FILE)[[:space:]]*=/d' local.properties
 
+      - name: Create default local.properties
+        if: env.RELEASE_PROPERTIES_BASE64 == ''
+        run: |
+          {
+            echo "SUPABASE_URL="
+            echo "SUPABASE_ANON_KEY="
+            echo "TMDB_API_KEY="
+            echo "TRAKT_CLIENT_ID="
+            echo "TRAKT_CLIENT_SECRET="
+            echo "SIMKL_CLIENT_ID="
+            echo "SIMKL_CLIENT_SECRET="
+            echo "MDBLIST_CLIENT_ID="
+            echo "DONATIONS_DONATE_URL="
+          } > local.properties
+
       - name: Prepare iOS dependencies
         run: ./scripts/prepare-ios-dependencies.sh
 

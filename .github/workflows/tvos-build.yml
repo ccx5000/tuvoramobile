@@ -1,0 +1,213 @@
+name: Build Test TV IPA
+
+on:
+  workflow_dispatch:
+    inputs:
+      configuration:
+        description: Production-optimized or fast validation build
+        required: true
+        type: choice
+        options:
+          - Debug
+          - Release
+        default: Release
+
+  push:
+    branches: [main]
+    paths: ['.github/workflows/tvos-build.yml']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tvos-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build unsigned ${{ inputs.configuration || 'Release' }} tvOS IPA
+    runs-on: macos-26
+    timeout-minutes: ${{ (inputs.configuration || 'Release') == 'Release' && 200 || 60 }}
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+      GRADLE_OPTS: -Dfile.encoding=UTF-8
+      TVOS_CONFIGURATION: ${{ inputs.configuration || 'Release' }}
+      KOTLIN_DAEMON_JVMARGS: -Xmx2048M
+      NUVIO_GRADLE_JVMARGS: -Xmx4608M -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=768M
+      NUVIO_KOTLIN_NATIVE_JVMARGS: -Xmx4608M
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Cache Kotlin Native
+        uses: actions/cache@v5
+        with:
+          path: ~/.konan
+          key: konan-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('gradle/libs.versions.toml') }}
+          restore-keys: |
+            konan-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Verify Apple toolchain
+        run: |
+          xcodebuild -version
+          xcrun --sdk appletvos --show-sdk-version
+
+      - name: Configure local.properties
+        run: |
+          {
+            echo "SUPABASE_URL="
+            echo "SUPABASE_ANON_KEY="
+            echo "TMDB_API_KEY="
+            echo "TRAKT_CLIENT_ID="
+            echo "TRAKT_CLIENT_SECRET="
+            echo "SIMKL_CLIENT_ID="
+            echo "SIMKL_CLIENT_SECRET="
+            echo "MDBLIST_CLIENT_ID="
+            echo "DONATIONS_DONATE_URL="
+          } > local.properties
+
+      - name: Prepare iOS dependencies
+        run: ./scripts/prepare-ios-dependencies.sh
+
+      - name: Build MPVKit dist xcframeworks (tvOS)
+        run: |
+          cd MPVKit
+          make build platform=tvos
+
+      - name: Re-extract vendored xcframeworks (make wipes the shared dir per library)
+        run: |
+          cd MPVKit/dist/release
+          if [[ ! -f Libplacebo.xcframework.zip ]]; then
+            echo "Libplacebo.xcframework.zip missing from make output - fetching the prebuilt release the pipeline already consumes"
+            wget -q -O Libplacebo.xcframework.zip https://github.com/mpvkit/libplacebo-build/releases/download/7.360.1/Libplacebo.xcframework.zip
+          fi
+          for z in ./*.xcframework.zip; do
+            name="$(basename "$z" .xcframework.zip)"
+            xf="$name.xcframework"
+            target="xcframework/$xf"
+            work="xcframework/.unpack-$xf"
+            lift="$target.lift"
+            rm -rf "$target" "$work" "$lift"
+            mkdir -p "$work"
+            unzip -oq "$z" -d "$work"
+            entry="$(find "$work" -type d -name "$xf" | sort | head -1)"
+            if [[ -z "$entry" ]]; then
+              entry="$(find "$work" -type d -name '*.xcframework' | sort | head -1)"
+            fi
+            if [[ -z "$entry" ]]; then
+              if [[ -d "$work/ios-arm64" || -d "$work/tvos-arm64" ]]; then
+                entry="$work"
+              else
+                echo "No $xf inside $z - extracted tree:" >&2
+                find "$work" -maxdepth 3 >&2
+                exit 1
+              fi
+            fi
+            mv "$entry" "$target"
+            while [[ ! -f "$target/Info.plist" ]]; do
+              inner="$(find "$target" -mindepth 1 -maxdepth 1 -type d -name '*.xcframework' | sort | head -1)"
+              [[ -n "$inner" ]] || break
+              rm -rf "$lift"
+              mv "$inner" "$lift"
+              rm -rf "$target"
+              mv "$lift" "$target"
+            done
+            rm -rf "$work" "$lift"
+            echo "$xf: $(find "$target" -mindepth 1 -maxdepth 1 -type d | xargs -n1 basename | tr '\n' ' ')"
+          done
+          for lib in Libmpv Libavcodec Libavdevice Libavfilter Libavformat Libavutil Libswresample Libswscale Libplacebo; do
+            [[ -d "xcframework/$lib.xcframework" ]] || { echo "MISSING xcframework/$lib.xcframework" >&2; exit 1; }
+          done
+          if [[ ! -f xcframework/Libmpv.xcframework/tvos-arm64/Libmpv.framework/Libmpv ]]; then
+            echo "Libmpv tvOS device slice still wrong:" >&2
+            find xcframework/Libmpv.xcframework -maxdepth 4 >&2
+            exit 1
+          fi
+
+      - name: Generate Xcode project
+        run: |
+          brew install xcodegen
+          cd tvosApp
+          xcodegen generate
+
+      - name: Build unsigned ${{ inputs.configuration || 'Release' }} tvOS IPA
+        run: |
+          (
+            while sleep 60; do
+              echo "::group::Build resources $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+              uptime
+              vm_stat
+              ps -Ao pid,etime,%cpu,rss,command -r | head -n 12 || true
+              echo "::endgroup::"
+            done
+          ) &
+          monitor_pid=$!
+          trap 'kill "${monitor_pid}" 2>/dev/null || true' EXIT
+          configuration="${TVOS_CONFIGURATION:-Release}"
+          case "${configuration}" in
+            Debug)   configuration_slug="debug" ;;
+            Release) configuration_slug="release" ;;
+            *) echo "Unsupported tvOS configuration: ${configuration}" >&2; exit 1 ;;
+          esac
+          derived_data="build/tvos-derived-full-${configuration_slug}"
+          mkdir -p build/ios-ipa
+          xcodebuild \
+            -project tvosApp/TuvoraTV.xcodeproj \
+            -scheme TuvoraTV \
+            -configuration "${configuration}" \
+            -sdk appletvos \
+            -destination 'generic/platform=tvOS' \
+            -derivedDataPath "${derived_data}" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY= \
+            build
+          app_path="$(find "${derived_data}/Build/Products/${configuration}-appletvos" -maxdepth 1 -type d -name '*.app' -print -quit)"
+          if [[ -z "${app_path}" ]]; then
+            echo "tvOS build did not produce an app bundle." >&2
+            ls "${derived_data}/Build/Products/${configuration}-appletvos" >&2 || true
+            exit 1
+          fi
+          bundle_name="$(basename "${app_path}")"
+          mkdir -p Payload
+          rm -rf "Payload/${bundle_name}"
+          cp -R "${app_path}" Payload/
+          zip -qryX "build/ios-ipa/tuvora-tv-${configuration_slug}-unsigned.ipa" Payload -x '*/._*' '*/.DS_Store'
+
+      - name: Summarize IPA
+        run: |
+          configuration_slug="$(printf '%s' "${TVOS_CONFIGURATION:-Release}" | tr '[:upper:]' '[:lower:]')"
+          ipa_path="build/ios-ipa/tuvora-tv-${configuration_slug}-unsigned.ipa"
+          if [[ ! -f "${ipa_path}" ]]; then
+            echo "No TV IPA was produced." >&2
+            exit 1
+          fi
+
+          {
+            echo "## Test TV IPA"
+            echo
+            echo "- File: $(basename "${ipa_path}")"
+            echo "- Size: $(du -h "${ipa_path}" | cut -f1)"
+            echo "- SHA-256: $(shasum -a 256 "${ipa_path}" | awk '{print $1}')"
+            echo "- Distribution: full"
+            echo "- Configuration: ${TVOS_CONFIGURATION:-Release}"
+            echo "- Signing: unsigned"
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Upload test TV IPA
+        uses: actions/upload-artifact@v7
+        with:
+          name: tuvora-tv-${{ inputs.configuration || 'Release' }}-ipa-${{ github.sha }}
+          path: build/ios-ipa/*.ipa
+          if-no-files-found: error
+          retention-days: 7
