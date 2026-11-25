@@ -98,6 +98,10 @@ jobs:
             wget -q -O /tmp/Libplacebo.xcframework.zip https://github.com/mpvkit/libplacebo-build/releases/download/7.360.1/Libplacebo.xcframework.zip
             unzip -oq /tmp/Libplacebo.xcframework.zip -d xcframework/
           fi
+          echo "--- Libmpv zip listing ---"
+          unzip -l Libmpv.xcframework.zip | head -30 || true
+          echo "--- extracted Libmpv.xcframework ---"
+          find xcframework/Libplacebo.xcframework xcframework/Libmpv.xcframework -maxdepth 2 | head -30
           ls xcframework
 
       - name: Build unsigned full ${{ inputs.configuration }} IPA
