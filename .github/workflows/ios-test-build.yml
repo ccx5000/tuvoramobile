@@ -80,10 +80,18 @@ jobs:
       - name: Re-extract vendored xcframeworks (make wipes the shared dir per library)
         run: |
           cd MPVKit/dist/release
+          rm -rf /tmp/mpvkit-xfbx && mkdir -p /tmp/mpvkit-xfbx
           for z in ./*.xcframework.zip; do
             name="$(basename "$z" .zip)"
-            rm -rf "xcframework/$name"
-            unzip -oq "$z" -d "xcframework/$name"
+            mkdir -p "/tmp/mpvkit-xfbx/$name"
+            unzip -oq "$z" -d "/tmp/mpvkit-xfbx/$name"
+            entry="$(find "/tmp/mpvkit-xfbx/$name" -maxdepth 2 -type d -name '*.xcframework' -print -quit)"
+            if [[ -z "$entry" ]]; then
+              echo "No xcframework inside $z" >&2
+              exit 1
+            fi
+            rm -rf "xcframework/$(basename "$entry")"
+            cp -R "$entry" "xcframework/$(basename "$entry")"
           done
           if [[ ! -d xcframework/Libplacebo.xcframework ]]; then
             echo "Libplacebo.xcframework missing from make output - fetching the prebuilt release the pipeline already consumes"
