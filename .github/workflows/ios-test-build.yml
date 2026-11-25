@@ -27,7 +27,7 @@ jobs:
   build:
     name: Build unsigned full ${{ inputs.configuration || 'Release' }} IPA
     runs-on: macos-26
-    timeout-minutes: ${{ (inputs.configuration || 'Release') == 'Release' && 75 || 30 }}
+    timeout-minutes: ${{ (inputs.configuration || 'Release') == 'Release' && 180 || 60 }}
     env:
       DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
       GRADLE_OPTS: -Dfile.encoding=UTF-8
@@ -71,6 +71,11 @@ jobs:
 
       - name: Prepare iOS dependencies
         run: ./scripts/prepare-ios-dependencies.sh
+
+      - name: Build MPVKit dist xcframeworks
+        run: |
+          cd MPVKit
+          make build platform=ios
 
       - name: Build unsigned full ${{ inputs.configuration }} IPA
         run: |
