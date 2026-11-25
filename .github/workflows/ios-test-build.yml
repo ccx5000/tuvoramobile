@@ -77,6 +77,16 @@ jobs:
           cd MPVKit
           make build platform=ios
 
+      - name: Re-extract vendored xcframeworks (make wipes the shared dir per library)
+        run: |
+          cd MPVKit/dist/release
+          for z in ./*.xcframework.zip; do
+            name="$(basename "$z" .zip)"
+            rm -rf "xcframework/$name"
+            unzip -oq "$z" -d "xcframework/$name"
+          done
+          ls -la xcframework | head -20
+
       - name: Build unsigned full ${{ inputs.configuration }} IPA
         run: |
           (
