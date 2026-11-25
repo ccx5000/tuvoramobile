@@ -80,30 +80,37 @@ jobs:
       - name: Re-extract vendored xcframeworks (make wipes the shared dir per library)
         run: |
           cd MPVKit/dist/release
-          rm -rf /tmp/mpvkit-xfbx && mkdir -p /tmp/mpvkit-xfbx
+          if [[ ! -f Libplacebo.xcframework.zip ]]; then
+            echo "Libplacebo.xcframework.zip missing from make output - fetching the prebuilt release the pipeline already consumes"
+            wget -q -O Libplacebo.xcframework.zip https://github.com/mpvkit/libplacebo-build/releases/download/7.360.1/Libplacebo.xcframework.zip
+          fi
           for z in ./*.xcframework.zip; do
             name="$(basename "$z" .zip)"
-            mkdir -p "/tmp/mpvkit-xfbx/$name"
-            unzip -oq "$z" -d "/tmp/mpvkit-xfbx/$name"
-            entry="$(find "/tmp/mpvkit-xfbx/$name" -maxdepth 2 -type d -name '*.xcframework' -print -quit)"
+            target="xcframework/$name"
+            work="xcframework/.unpack-$name"
+            rm -rf "$target" "$work"
+            mkdir -p "$work"
+            unzip -oq "$z" -d "$work"
+            entry="$(find "$work" -type d -name '*.xcframework' | awk '{ print length, $0 }' | sort -n | head -1 | cut -d' ' -f2-)"
             if [[ -z "$entry" ]]; then
               echo "No xcframework inside $z" >&2
               exit 1
             fi
-            rm -rf "xcframework/$(basename "$entry")"
-            mkdir -p "xcframework/$(basename "$entry")"
-            cp -R "$entry"/. "xcframework/$(basename "$entry")/"
+            while [[ -d "$entry/$name.xcframework" ]]; do
+              entry="$entry/$name.xcframework"
+            done
+            mv "$entry" "$target"
+            rm -rf "$work"
+            echo "$name: $(find "$target" -mindepth 1 -maxdepth 1 | tr '\n' ' ')"
           done
-          if [[ ! -d xcframework/Libplacebo.xcframework ]]; then
-            echo "Libplacebo.xcframework missing from make output - fetching the prebuilt release the pipeline already consumes"
-            wget -q -O /tmp/Libplacebo.xcframework.zip https://github.com/mpvkit/libplacebo-build/releases/download/7.360.1/Libplacebo.xcframework.zip
-            unzip -oq /tmp/Libplacebo.xcframework.zip -d xcframework/
+          for lib in Libmpv Libavcodec Libavdevice Libavfilter Libavformat Libavutil Libswresample Libswscale Libplacebo; do
+            [[ -d "xcframework/$lib.xcframework" ]] || { echo "MISSING xcframework/$lib.xcframework" >&2; exit 1; }
+          done
+          if [[ ! -f xcframework/Libmpv.xcframework/ios-arm64/Libmpv.framework/Libmpv ]]; then
+            echo "Libmpv device slice still wrong:" >&2
+            find xcframework/Libmpv.xcframework -maxdepth 4 >&2
+            exit 1
           fi
-          echo "--- Libmpv zip listing ---"
-          unzip -l Libmpv.xcframework.zip | head -30 || true
-          echo "--- extracted Libmpv.xcframework ---"
-          find xcframework/Libplacebo.xcframework xcframework/Libmpv.xcframework -maxdepth 2 | head -30
-          ls xcframework
 
       - name: Build unsigned full ${{ inputs.configuration }} IPA
         run: |
