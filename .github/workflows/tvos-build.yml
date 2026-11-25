@@ -1,25 +1,13 @@
 name: TV IPA (disabled)
-true:
-  workflow_dispatch:
-    inputs:
-      configuration:
-        description: Production-optimized or fast validation build
-        required: true
-        type: choice
-        options:
-        - Debug
-        - Release
-        default: Release
+
+on:
   push:
-    branches:
-    - main
-    paths:
-    - .github/workflows/tvos-build.yml
+    branches: [main]
+    paths: ['.github/workflows/tvos-build.yml']
+
 permissions:
   contents: read
-concurrency:
-  group: tvos-build-${{ github.ref }}
-  cancel-in-progress: true
+
 jobs:
   build:
     name: TV IPA disabled by request
@@ -29,5 +17,5 @@ jobs:
       group: tvos-build-${{ github.ref }}
       cancel-in-progress: true
     steps:
-    - name: No-op
-      run: echo "The Apple TV IPA build is no longer requested; skipping."
+      - name: No-op
+        run: echo "The Apple TV IPA build is no longer requested; skipping."
