@@ -1,5 +1,5 @@
 # Build Test IPA (packaging accepts Tuvora.app)
-name: Build Test IPA
+# Build Test IPA (privacy rebuild: rec-events off by default)
 
 on:
   workflow_dispatch:
