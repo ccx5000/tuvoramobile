@@ -2004,7 +2004,7 @@
     <string name="compose_settings_root_tracking_description">Připojte služby pro sledování a vyberte, která bude zdrojem pro Knihovnu a Pokračovat ve sledování.</string>
     <string name="settings_advanced_section_diagnostics">DIAGNOSTIKA</string>
     <string name="settings_advanced_sentry_reports">Hlášení pádů Sentry</string>
-    <string name="settings_advanced_sentry_reports_subtitle">Odesílat hlášení o pádech a ANR s bezpečným kontextem. Ve výchozím nastavení zapnuto.</string>
+    <string name="settings_advanced_sentry_reports_subtitle">Odesílá hlášení o pádech, ANR a anonymním používání s bezpečným kontextem. Ve výchozím stavu vypnuto — zapněte, aby toto zařízení začalo hlášení odesílat.</string>
     <string name="sentry_enable_dialog_title">Zapnout hlášení pádů?</string>
     <string name="sentry_enable_dialog_subtitle">Hlášení pádů pomáhají odhalit chyby specifické pro zařízení, aniž byste je museli znovu vyvolávat pomocí protokolů ADB.</string>
     <string name="sentry_disable_dialog_title">Vypnout hlášení pádů?</string>

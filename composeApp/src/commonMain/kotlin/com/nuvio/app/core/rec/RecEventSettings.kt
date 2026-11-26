@@ -19,9 +19,12 @@ const val REC_KILL_SWITCH_BACKOFF_MS = 24 * 60 * 60 * 1000L
  * quiet for 24h — the only lever available if the stream needs stopping without a release.
  */
 object RecEventSettings {
-    private val _enabled = MutableStateFlow(RecEventStorage.loadBoolean(KEY_ENABLED, true))
+    // Privacy fork: the stored value wins, but a fresh install starts with recommendation
+    // telemetry OFF. Nothing about what is shown or watched leaves the device until the user
+    // opts in from Settings > Advanced > Diagnostics.
+    private val _enabled = MutableStateFlow(RecEventStorage.loadBoolean(KEY_ENABLED, false))
 
-    /** "Share anonymous usage to improve recommendations" — on by default, off instantly. */
+    /** "Share anonymous usage to improve recommendations" — off by default, on only by explicit choice. */
     val enabled: StateFlow<Boolean> = _enabled.asStateFlow()
 
     fun setEnabled(value: Boolean) {

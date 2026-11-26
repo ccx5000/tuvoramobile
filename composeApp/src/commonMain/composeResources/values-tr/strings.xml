@@ -473,7 +473,7 @@
     <string name="settings_advanced_remember_last_profile">Son Profili Hatırla</string>
     <string name="settings_advanced_remember_last_profile_description">Başlangıçta son seçilen profili hatırla</string>
     <string name="settings_advanced_sentry_reports">Sentry Hata Raporları</string>
-    <string name="settings_advanced_sentry_reports_subtitle">Çökme ve ANR raporlarını güvenli bağlamla gönderin. Varsayılan olarak açıktır.</string>
+    <string name="settings_advanced_sentry_reports_subtitle">Güvenli bağlamla çökme, ANR ve anonim kullanım raporları gönderir. Varsayılan olarak kapalı — bu cihazdan rapor göndermeye başlamak için açın.</string>
     <string name="sentry_enable_dialog_title">Hata raporları açılsın mı?</string>
     <string name="sentry_enable_dialog_subtitle">Hata raporları, ADB günlükleriyle sorunu yeniden oluşturmanızı istemeden cihaza özel arızaları tespit etmeye yardımcı olur.</string>
     <string name="sentry_disable_dialog_title">Hata raporları kapatılsın mı?</string>

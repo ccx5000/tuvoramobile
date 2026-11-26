@@ -564,7 +564,7 @@
     <string name="settings_advanced_remember_last_profile">Utolsó profil megjegyzése</string>
     <string name="settings_advanced_remember_last_profile_description">Az utoljára kiválasztott profil megjegyzése indításkor</string>
     <string name="settings_advanced_sentry_reports">Sentry-összeomlási jelentések</string>
-    <string name="settings_advanced_sentry_reports_subtitle">Összeomlási és ANR- (nem válaszoló alkalmazás) jelentések küldése biztonságos környezeti adatokkal. Alapértelmezés szerint be van kapcsolva.</string>
+    <string name="settings_advanced_sentry_reports_subtitle">Összeomlási, ANR- és névtelen használati jelentések küldése biztonságos kontextussal. Alapértelmezés szerint kikapcsolva — kapcsolja be a jelentések küldésének megkezdéséhez erről az eszközről.</string>
     <string name="sentry_enable_dialog_title">Bekapcsolod az összeomlási jelentéseket?</string>
     <string name="sentry_enable_dialog_subtitle">Az összeomlási jelentések segítenek azonosítani az eszközspecifikus hibákat anélkül, hogy ADB-naplókkal kellene reprodukálnod a hibát.</string>
     <string name="sentry_disable_dialog_title">Kikapcsolod az összeomlási jelentéseket?</string>

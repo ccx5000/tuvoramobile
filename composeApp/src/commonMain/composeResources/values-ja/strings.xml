@@ -561,7 +561,7 @@
     <string name="settings_advanced_remember_last_profile">最後のプロフィールを記憶</string>
     <string name="settings_advanced_remember_last_profile_description">起動時に最後に選択したプロフィールを記憶する</string>
     <string name="settings_advanced_sentry_reports">Sentryクラッシュレポート</string>
-    <string name="settings_advanced_sentry_reports_subtitle">安全な情報とともにクラッシュとANRのレポートを送信します。デフォルトでオンです。</string>
+    <string name="settings_advanced_sentry_reports_subtitle">安全なコンテキスト付きで、クラッシュ、ANR、匿名の利用状況レポートを送信します。デフォルトではオフです。このデバイスからのレポート送信を開始するにはオンにしてください。</string>
     <string name="sentry_enable_dialog_title">クラッシュレポートをオンにしますか？</string>
     <string name="sentry_enable_dialog_subtitle">クラッシュレポートは、ADBログで問題を再現しなくても、特定のデバイスで発生する不具合の特定に役立ちます。</string>
     <string name="sentry_disable_dialog_title">クラッシュレポートをオフにしますか？</string>

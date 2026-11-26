@@ -1929,7 +1929,7 @@
     <string name="compose_settings_root_privacy_policy_description">Zistite, ako Tuvora spracováva vaše údaje</string>
     <string name="settings_advanced_section_diagnostics">DIAGNOSTIKA</string>
     <string name="settings_advanced_sentry_reports">Hlásenia o pádoch (Sentry)</string>
-    <string name="settings_advanced_sentry_reports_subtitle">Odosielať hlásenia o pádoch a zamrznutiach (ANR) s bezpečným kontextom. Predvolene zapnuté.</string>
+    <string name="settings_advanced_sentry_reports_subtitle">Odosiela hlásenia o pádoch, ANR a anonymnom používaní s bezpečným kontextom. Predvolene vypnuté — zapnite, aby toto zariadenie začalo odosielať hlásenia.</string>
     <string name="sentry_enable_dialog_title">Zapnúť hlásenia o pádoch?</string>
     <string name="sentry_enable_dialog_subtitle">Hlásenia o pádoch pomáhajú identifikovať chyby špecifické pre konkrétne zariadenie bez potreby reprodukovať problém pomocou záznamov ADB.</string>
     <string name="sentry_disable_dialog_title">Vypnúť hlásenia o pádoch?</string>

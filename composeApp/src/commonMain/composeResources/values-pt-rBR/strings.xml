@@ -561,7 +561,7 @@
     <string name="settings_advanced_remember_last_profile">Lembrar último perfil</string>
     <string name="settings_advanced_remember_last_profile_description">Lembra o último perfil selecionado ao iniciar</string>
     <string name="settings_advanced_sentry_reports">Relatórios de falhas do Sentry</string>
-    <string name="settings_advanced_sentry_reports_subtitle">Envie relatórios de falhas e ANR com contexto seguro. Ativado por padrão.</string>
+    <string name="settings_advanced_sentry_reports_subtitle">Envia relatórios de travamentos, ANR e uso anônimo com contexto seguro. Desativado por padrão: ative para começar a enviar relatórios deste dispositivo.</string>
     <string name="sentry_enable_dialog_title">Ativar relatórios de falhas?</string>
     <string name="sentry_enable_dialog_subtitle">Os relatórios de falhas ajudam a identificar erros específicos de dispositivos sem pedir que você reproduza o problema com logs do ADB.</string>
     <string name="sentry_disable_dialog_title">Desativar relatórios de falhas?</string>

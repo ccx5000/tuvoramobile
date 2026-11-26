@@ -59,7 +59,7 @@
     <string name="settings_advanced_remember_last_profile">கடைசி சுயவிவரத்தை நினைவில் கொள்</string>
     <string name="settings_advanced_remember_last_profile_description">தொடக்கத்தில் கடைசியாகத் தேர்ந்தெடுத்த சுயவிவரத்தை நினைவில் கொள்</string>
     <string name="settings_advanced_sentry_reports">Sentry செயலிழப்பு அறிக்கைகள்</string>
-    <string name="settings_advanced_sentry_reports_subtitle">பாதுகாப்பான சூழல் விவரங்களுடன் செயலிழப்பு மற்றும் ANR அறிக்கைகளை அனுப்பு. இயல்பாக இயக்கப்பட்டுள்ளது.</string>
+    <string name="settings_advanced_sentry_reports_subtitle">பாதுகாப்பான சூழலுடன் செயலிழப்பு, ANR மற்றும் அநாமதேய பயன்பாட்டு அறிக்கைகளை அனுப்புகிறது. இயல்பாக முடக்கப்பட்டுள்ளது — இந்தச் சாதனத்திலிருந்து அறிக்கைகள் அனுப்பப்படத் தொடங்க இதை இயக்கவும்.</string>
     <string name="sentry_enable_dialog_title">செயலிழப்பு அறிக்கைகளை இயக்கவா?</string>
     <string name="sentry_enable_dialog_subtitle">ADB பதிவுகளுடன் சிக்கலை மீண்டும் உருவாக்கச் சொல்லாமல், சாதனத்துக்கே உரிய தோல்விகளை அடையாளம் காண அறிக்கைகள் உதவும்.</string>
     <string name="sentry_disable_dialog_title">செயலிழப்பு அறிக்கைகளை முடக்கவா?</string>

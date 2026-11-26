@@ -568,7 +568,7 @@
     <string name="settings_advanced_remember_last_profile">Remember Last Profile</string>
     <string name="settings_advanced_remember_last_profile_description">Remember last selected profile at startup</string>
     <string name="settings_advanced_sentry_reports">Crash &amp; Usage Reports</string>
-    <string name="settings_advanced_sentry_reports_subtitle">Send crash, ANR and anonymous usage reports with safe context. On by default — turn it off to stop sending anything from this device.</string>
+    <string name="settings_advanced_sentry_reports_subtitle">Send crash, ANR and anonymous usage reports with safe context. Off by default — turn it on to start sending reports from this device.</string>
     <string name="sentry_enable_dialog_title">Turn on crash reports?</string>
     <string name="sentry_enable_dialog_subtitle">Crash reports help identify device-specific failures without asking you to reproduce the issue with diagnostic logs.</string>
     <string name="sentry_disable_dialog_title">Turn off crash reports?</string>

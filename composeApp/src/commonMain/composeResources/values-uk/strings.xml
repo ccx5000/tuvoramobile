@@ -561,7 +561,7 @@
     <string name="settings_advanced_remember_last_profile">Запам’ятовувати останній профіль</string>
     <string name="settings_advanced_remember_last_profile_description">Запам’ятовувати останній вибраний профіль під час запуску</string>
     <string name="settings_advanced_sentry_reports">Звіти про збої Sentry</string>
-    <string name="settings_advanced_sentry_reports_subtitle">Надсилати звіти про збої та зависання (ANR) із безпечним контекстом. Увімкнено за замовчуванням.</string>
+    <string name="settings_advanced_sentry_reports_subtitle">Надсилає звіти про збої, ANR та анонімне використання з безпечним контекстом. Типово вимкнено — увімкніть, щоб почати надсилати звіти з цього пристрою.</string>
     <string name="sentry_enable_dialog_title">Увімкнути звіти про збої?</string>
     <string name="sentry_enable_dialog_subtitle">Звіти про збої допомагають виявляти помилки на конкретних пристроях без потреби відтворювати проблему через журнали ADB.</string>
     <string name="sentry_disable_dialog_title">Вимкнути звіти про збої?</string>

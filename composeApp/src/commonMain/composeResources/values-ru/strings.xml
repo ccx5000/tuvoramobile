@@ -548,7 +548,7 @@
     <string name="settings_advanced_remember_last_profile">Запомнить последний профиль</string>
     <string name="settings_advanced_remember_last_profile_description">Запоминать последний выбранный профиль при запуске</string>
     <string name="settings_advanced_sentry_reports">Sentry Отчеты о сбоях</string>
-    <string name="settings_advanced_sentry_reports_subtitle">Отправляйте отчеты о сбоях и ANR в безопасном контексте. Включено по умолчанию.</string>
+    <string name="settings_advanced_sentry_reports_subtitle">Отправляет отчёты о сбоях, ANR и анонимном использовании с безопасным контекстом. По умолчанию выключено — включите, чтобы начать отправку отчётов с этого устройства.</string>
     <string name="sentry_enable_dialog_title">Включить отчеты о сбоях?</string>
     <string name="sentry_enable_dialog_subtitle">Отчеты о сбоях помогают выявить сбои конкретных устройств, не требуя воспроизвести проблему с помощью журналов ADB.</string>
     <string name="sentry_disable_dialog_title">Отключить отчеты о сбоях?</string>

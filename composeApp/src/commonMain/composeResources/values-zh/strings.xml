@@ -557,7 +557,7 @@
     <string name="settings_advanced_remember_last_profile">记住上次的个人资料</string>
     <string name="settings_advanced_remember_last_profile_description">启动时记住上次选择的个人资料</string>
     <string name="settings_advanced_sentry_reports">Sentry 崩溃报告</string>
-    <string name="settings_advanced_sentry_reports_subtitle">发送包含安全上下文的崩溃和 ANR 报告。默认开启。</string>
+    <string name="settings_advanced_sentry_reports_subtitle">在安全的上下文中发送崩溃、ANR 和匿名使用情况报告。默认关闭——开启后才会开始从此设备发送报告。</string>
     <string name="sentry_enable_dialog_title">开启崩溃报告？</string>
     <string name="sentry_enable_dialog_subtitle">崩溃报告有助于识别特定于设备的故障，无需您通过 ADB 日志重现问题。</string>
     <string name="sentry_disable_dialog_title">关闭崩溃报告？</string>

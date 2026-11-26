@@ -564,7 +564,7 @@
     <string name="settings_advanced_remember_last_profile">Mémoriser le dernier profil</string>
     <string name="settings_advanced_remember_last_profile_description">Mémoriser le dernier profil sélectionné au démarrage</string>
     <string name="settings_advanced_sentry_reports">Rapports de plantage Sentry</string>
-    <string name="settings_advanced_sentry_reports_subtitle">Envoyer les rapports de plantage et d’ANR avec un contexte sécurisé. Activé par défaut.</string>
+    <string name="settings_advanced_sentry_reports_subtitle">Envoie des rapports de plantage, rapports ANR et usage anonyme avec un contexte sûr. Désactivé par défaut — activez-le pour commencer à envoyer des rapports depuis cet appareil.</string>
     <string name="sentry_enable_dialog_title">Activer les rapports de plantage&#160;?</string>
     <string name="sentry_enable_dialog_subtitle">Les rapports de plantage aident à identifier les défaillances propres à un appareil sans vous demander de reproduire le problème avec des journaux ADB.</string>
     <string name="sentry_disable_dialog_title">Désactiver les rapports de plantage&#160;?</string>

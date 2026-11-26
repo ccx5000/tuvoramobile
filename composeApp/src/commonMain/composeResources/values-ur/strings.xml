@@ -553,7 +553,7 @@
     <string name="settings_advanced_remember_last_profile">آخری پروفائل یاد رکھیں</string>
     <string name="settings_advanced_remember_last_profile_description">ایپ شروع ہونے پر آخری منتخب پروفائل یاد رکھیں</string>
     <string name="settings_advanced_sentry_reports">Sentry کریش رپورٹس</string>
-    <string name="settings_advanced_sentry_reports_subtitle">محفوظ context کے ساتھ crash اور ANR reports بھیجیں۔ یہ بطور ڈیفالٹ فعال ہے۔</string>
+    <string name="settings_advanced_sentry_reports_subtitle">محفوظ سیاق کے ساتھ کریش، ANR اور گمنام استعمال کی رپورٹس بھیجتا ہے۔ پہلے سے بند ہے — اس ڈیوائس سے رپورٹس بھیجنا شروع کرنے کے لیے آن کریں۔</string>
     <string name="sentry_enable_dialog_title">کریش رپورٹس فعال کریں؟</string>
     <string name="sentry_enable_dialog_subtitle">کریش رپورٹس آپ سے ADB logs کے ذریعے مسئلہ دوبارہ پیدا کروائے بغیر، مخصوص ڈیوائس سے متعلق خرابیوں کی نشاندہی میں مدد دیتی ہیں۔</string>
     <string name="sentry_disable_dialog_title">کریش رپورٹس بند کریں؟</string>

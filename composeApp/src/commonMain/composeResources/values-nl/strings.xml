@@ -561,7 +561,7 @@
     <string name="settings_advanced_remember_last_profile">Laatste profiel onthouden</string>
     <string name="settings_advanced_remember_last_profile_description">Onthoud het laatst geselecteerde profiel bij opstarten</string>
     <string name="settings_advanced_sentry_reports">Crashrapporten (Sentry)</string>
-    <string name="settings_advanced_sentry_reports_subtitle">Verstuur crash- en ANR-rapporten met veilige context. Standaard ingeschakeld.</string>
+    <string name="settings_advanced_sentry_reports_subtitle">Verzendt crash-, ANR- en anonieme gebruiksrapporten met veilige context. Standaard uit — schakel het in om rapporten vanaf dit apparaat te gaan verzenden.</string>
     <string name="sentry_enable_dialog_title">Crashrapporten inschakelen?</string>
     <string name="sentry_enable_dialog_subtitle">Crashrapporten helpen apparaatspecifieke fouten te identificeren zonder dat je het probleem met ADB-logs hoeft te reproduceren.</string>
     <string name="sentry_disable_dialog_title">Crashrapporten uitschakelen?</string>

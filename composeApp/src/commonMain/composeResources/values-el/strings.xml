@@ -391,7 +391,7 @@
     <string name="settings_account_status_signed_in">Συνδεδεμένος</string>
     <string name="settings_advanced_section_diagnostics">ΔΙΑΓΝΩΣΤΙΚΑ</string>
     <string name="settings_advanced_sentry_reports">Αναφορές σφαλμάτων Sentry</string>
-    <string name="settings_advanced_sentry_reports_subtitle">Αποστολή αναφορών σφαλμάτων και ANR με ασφαλές πλαίσιο. Ενεργό από προεπιλογή.</string>
+    <string name="settings_advanced_sentry_reports_subtitle">Αποστολή αναφορών σφαλμάτων, ANR και ανώνυμης χρήσης με ασφαλές πλαίσιο. Ανενεργό από προεπιλογή — ενεργοποιήστε το για να αρχίσει η αποστολή αναφορών από αυτήν τη συσκευή.</string>
     <string name="settings_appearance_amoled_black">AMOLED Μαύρο</string>
     <string name="settings_appearance_amoled_description">Χρήση καθαρού μαύρου φόντου για οθόνες OLED.</string>
     <string name="settings_appearance_app_icon">Εικονίδιο εφαρμογής</string>

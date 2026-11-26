@@ -1929,7 +1929,7 @@
     <string name="compose_auth_terms_link">Regulamin</string>
     <string name="settings_advanced_section_diagnostics">DIAGNOSTYKA</string>
     <string name="settings_advanced_sentry_reports">Raporty awarii Sentry</string>
-    <string name="settings_advanced_sentry_reports_subtitle">Wysyłaj raporty awarii i ANR z bezpiecznym kontekstem. Domyślnie włączone.</string>
+    <string name="settings_advanced_sentry_reports_subtitle">Wysyła raporty o awariach, ANR i anonimowym użytkowaniu z bezpiecznym kontekstem. Domyślnie wyłączone — włącz, aby rozpocząć wysyłanie raportów z tego urządzenia.</string>
     <string name="sentry_enable_dialog_title">Włączyć raporty awarii?</string>
     <string name="sentry_enable_dialog_subtitle">Raporty awarii pomagają identyfikować problemy specyficzne dla urządzenia bez konieczności reprodukcji błędu z logami ADB.</string>
     <string name="sentry_disable_dialog_title">Wyłączyć raporty awarii?</string>
