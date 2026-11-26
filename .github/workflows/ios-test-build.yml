@@ -33,6 +33,7 @@ jobs:
       GRADLE_OPTS: -Dfile.encoding=UTF-8
       IOS_CONFIGURATION: ${{ inputs.configuration || 'Release' }}
       KOTLIN_FRAMEWORK_OPTIMIZE: "false"
+      NUVIO_SKIP_POSTHOG_UPLOAD: "1"
       KOTLIN_DAEMON_JVMARGS: -Xmx2048M
       NUVIO_GRADLE_JVMARGS: -Xmx4608M -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=768M
       NUVIO_KOTLIN_NATIVE_JVMARGS: -Xmx4608M

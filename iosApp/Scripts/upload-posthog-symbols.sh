@@ -5,6 +5,13 @@ if [ "${CONFIGURATION:-}" != "Release" ]; then
   exit 0
 fi
 
+# Fork/CI escape hatch: symbol upload reaches the developer's PostHog project. CI IPAs are
+# built privacy-first, so the whole upload can be skipped regardless of the API key.
+if [ -n "${NUVIO_SKIP_POSTHOG_UPLOAD:-}" ]; then
+  echo "PostHog dSYM upload skipped (NUVIO_SKIP_POSTHOG_UPLOAD set)."
+  exit 0
+fi
+
 fail_or_warn() {
   message="$1"
   if [ "${ACTION:-}" = "install" ] || [ -n "${CI:-}" ]; then
