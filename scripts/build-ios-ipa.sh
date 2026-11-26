@@ -54,9 +54,13 @@ fi
     CODE_SIGN_IDENTITY= \
     build
 
-app_path="${derived_data}/Build/Products/${configuration}-iphoneos/Nuvio.app"
+app_path="${derived_data}/Build/Products/${configuration}-iphoneos/Tuvora.app"
 if [[ ! -d "${app_path}" ]]; then
-    echo "iOS build did not produce ${app_path}." >&2
+    app_path="${derived_data}/Build/Products/${configuration}-iphoneos/Nuvio.app"
+fi
+if [[ ! -d "${app_path}" ]]; then
+    echo "iOS build produced neither Tuvora.app nor Nuvio.app in ${derived_data}/Build/Products/${configuration}-iphoneos." >&2
+    ls -la "${derived_data}/Build/Products/${configuration}-iphoneos" >&2 || true
     exit 1
 fi
 
@@ -102,10 +106,11 @@ output_directory="$(cd "${output_directory}" && pwd -P)"
 package_root="$(mktemp -d "${TMPDIR:-/tmp}/nuvio-ios-ipa.XXXXXX")"
 trap 'rm -rf "${package_root}"' EXIT
 mkdir -p "${package_root}/Payload"
-ditto "${app_path}" "${package_root}/Payload/Nuvio.app"
+bundle_name="$(basename "${app_path}")"
+ditto "${app_path}" "${package_root}/Payload/${bundle_name}"
 
-ipa_path="${output_directory}/nuvio-${version}-full-${configuration_slug}.ipa"
-temporary_ipa="${package_root}/nuvio-${version}-full-${configuration_slug}.ipa"
+ipa_path="${output_directory}/tuvora-${version}-full-${configuration_slug}.ipa"
+temporary_ipa="${package_root}/tuvora-${version}-full-${configuration_slug}.ipa"
 (
     cd "${package_root}"
     /usr/bin/zip -qry "${temporary_ipa}" Payload
